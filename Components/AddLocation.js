@@ -3,6 +3,8 @@ import { View, Button, Text, TextInput } from 'react-native';
 import store from '../store';
 import { connect } from 'react-redux';
 import { FormLabel, FormInput, FormValidationMessage, Buttons } from 'react-native-elements';
+import { currentNote } from '../reducers/index.js'
+
 
 
 class AddLocation extends Component {
@@ -38,7 +40,7 @@ class AddLocation extends Component {
         <Button
           raised
           title='ADD NEW LOCATION :)'
-          onPress={() => console.log('ive been pressed')}
+          onPress={() => this.props.handleNote(this.state.changeNote)}
         />
       </View>
     )
@@ -47,13 +49,16 @@ class AddLocation extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentLocation: state.currentLocation
+    currentLocation: state.currentLocation,
+    currentNote: state.currentNote
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-
+    handleNote: function(note) {
+      dispatch(currentNote(note))
+    }
   }
 }
 
