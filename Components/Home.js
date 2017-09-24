@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import Map from './Map';
 import store from '../store';

@@ -22,7 +22,8 @@ class AddLocation extends Component {
 
 
   render() {
-    const { currentLocation } = this.props
+    const { currentLocation } = this.props;
+    const { navigate } = this.props.navigation;
     console.log(this.state)
     return (
       <View>
@@ -40,7 +41,10 @@ class AddLocation extends Component {
         <Button
           raised
           title='ADD NEW LOCATION :)'
-          onPress={() => this.props.handleNote(this.state.changeNote)}
+          onPress={() => {
+            this.props.handleNote(this.state.changeNote)
+            navigate('Success')
+          }}
         />
       </View>
     )
