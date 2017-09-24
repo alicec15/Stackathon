@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { View, Button, Text } from 'react-native';
+import store from '../store';
 
 export default class Location extends Component {
   static navigationOptions = {
     title: 'Add your location',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => { 
       const lat = position.coords.latitude; 
       const long = position.coords.longitude; 
-      const hi = 'hi';
     })
   }
 
   render() {
     const { lat, long } = this.props
+    console.log(this.props)
     return (
       <View>
         <Text>{lat}</Text>
