@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
 import { StackNavigator } from 'react-navigation'; 
 import HomeScreen from './Components/Home';
-import LocationScreen from './Components/Location';
+import AddLocationScreen from './Components/AddLocation';
+import store from './store';
 
-const App = StackNavigator({
+const AppNavigator = StackNavigator({
   Home: { screen: HomeScreen },
-  Location: { screen: LocationScreen }
+  AddLocation: { screen: AddLocationScreen }
 });
 
-render (
-  <Provider store={store}>
-    <App />
-  </Provider>
-)
+export default App = () => {
+  console.log("whyyyy", store); 
 
+  return (
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
+  )
 
+}

@@ -3,17 +3,12 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import Map from './Map';
 import store from '../store';
+import { currentLocation } from '../reducers/index.js'
 import { connect } from 'react-redux';
-import 
 
 class Home extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      lat: undefined,
-      long: undefined
-    }
   }
 
   static navigationOptions = {
@@ -24,20 +19,20 @@ class Home extends Component {
     navigator.geolocation.getCurrentPosition(position => { 
       const lat = position.coords.latitude; 
       const long = position.coords.longitude; 
-      this.setState({ lat, long });
+      const location = [lat, long]
+      this.props.handleLocation(location)
     })
   }
 
   render() {
     const { navigate } = this.props.navigation;
-    const { lat, long } = this.state;
     return (
       <View style={styles.container} > 
         <Map />
-        <Text>Shake your phone to open the developer menu.</Text>
+        <Text>Why are you so forgetful, gosh.</Text>
         <Button
-          onPress={(lat, long) => navigate('Location')}
-          title="Map with me"
+          onPress={() => navigate('AddLocation')}
+          title="Map me"
         />
       </View>
     );
@@ -61,8 +56,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    handleLocation: function(lat, long) {
-      dispatch(currentLocation([lat, long]))
+    handleLocation: function(location) {
+      dispatch(currentLocation(location))
     }
   }
 }
