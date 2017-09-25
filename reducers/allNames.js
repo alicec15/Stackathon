@@ -13,3 +13,9 @@ export default allNamesReducer = (state=[], action) => {
         return state
   }
 }
+
+// export function sendToStorage(obj, name) {
+//   return function thunk (dispatch) {
+//       return AsyncStorage.setItem(name, JSON.stringify(obj), () => console.log('successful storage'))
+//   }
+// } 

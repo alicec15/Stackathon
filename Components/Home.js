@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import Map from './Map';
 import store from '../store';
 import { connect } from 'react-redux';
+import { currentLocation,  } from '../reducers/index.js'
 
 class Home extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class Home extends Component {
       const location = [lat, long]
       this.props.handleLocation(location)
     })
+
   }
 
   render() {
@@ -49,7 +51,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    currentLocation: state.currentLocation
+    currentLocation: state.currentLocation,
+    allNames: state.allNames,
+    allLocations: state.allLocations
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -57,6 +61,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleLocation: function(location) {
       dispatch(currentLocation(location))
     }
+    
   }
 }
 

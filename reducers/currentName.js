@@ -1,3 +1,5 @@
+import { AsyncStorage } from 'react-native';
+
 const CURRENT_NAME = 'CURRENT_NAME';
 
 export const currentName = name => {
@@ -13,3 +15,19 @@ export default currentNameReducer = (state='', action) => {
           return state
     }
 }
+
+export function sendToStorage(obj) {
+    return function thunk (dispatch) {
+        return AsyncStorage.setItem('main', JSON.stringify(obj), () => console.log('successful storage'))
+    }
+} 
+
+// export function fetchOrderAccessories() {
+//     return function thunk (dispatch) {
+//       return axios.get('/api/orders')
+//         .then(res => res.data)
+//         .then(orderAccessories => {
+//           dispatch(load(orderAccessories))
+//         })
+//     }
+//   }

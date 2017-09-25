@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { AsyncStorage, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
-import { currentLocation } from '../reducers/index.js'
+import { currentLocation, retrieveFromStorage } from '../reducers/index.js'
 
 class MapViewing extends Component {
   constructor(props) {
     super(props);
 
-    this.pinnedLocations = {}
-    this.getStoredLocations = this.getStoredLocations.bind(this)
+    //this.pinnedLocations = {}
+    // this.getStoredLocations = this.getStoredLocations.bind(this)
     // this.renderMap = this.renderMap.bind(this)
     this.renderMapMarkers = this.renderMapMarkers.bind(this)
 
@@ -23,26 +23,29 @@ class MapViewing extends Component {
       title: 'Pin Your Location',
   };
 
-  //initial rendering of the map yields an empty currentLocation, so region lat and long is undef, 
-  //how do i fix this without seeing the warning
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => { 
       const lat = position.coords.latitude; 
       const long = position.coords.longitude; 
       const location = [lat, long]
-      this.props.handleLocation(location)
+      console.log('setting state?', lat, long)
       this.setState({ latitude: lat, longitude: long })
+      this.props.handleLocation(location)
+
+      // console.log('setting state?', lat, long)
+      // this.setState({ latitude: lat, longitude: long })
     })
+    this.props.handleAllLocations()
   }
 
-  getStoredLocations() {
-    this.props.allNames.forEach((name) => {
-      AsyncStorage.getItem(name).then((value) => {
-        // console.log(value, 'storedlocations')
-        this.pinnedLocations[name] = JSON.parse(value)
-      })
-    })
-  }
+  // getStoredLocations() {
+  //   this.props.allNames.forEach((name) => {
+  //     AsyncStorage.getItem(name).then((value) => {
+  //       // console.log(value, 'storedlocations')
+  //       this.pinnedLocations[name] = JSON.parse(value)
+  //     })
+  //   })
+  // }
 
   renderMapMarkers(location) {
     return (
@@ -56,8 +59,9 @@ class MapViewing extends Component {
   }
 
   render() {
-    this.getStoredLocations();
-    const { currentLocation } = this.props;
+    // this.getStoredLocations();
+    const { currentLocation, allLocations } = this.props;
+    console.log(allLocations, 'PLS ')
 
     return (
       <MapView
@@ -70,9 +74,18 @@ class MapViewing extends Component {
           longitudeDelta: 0.2601,
         }}
       >
-          { Object.keys(this.pinnedLocations).map((key)=> {
-            return this.renderMapMarkers(this.pinnedLocations[key])
-          })  }
+        <MapView.Marker
+          key={'Location1'}
+          coordinate={{ latitude: 37.7749, longitude: -122.40 }}
+          title={'Park'}
+          description={'Eventually I will visit you'}
+        />
+        
+        { allLocations && Object.keys(allLocations).map((key)=> {
+          console.log('this shouldnt work')
+          return this.renderMapMarkers(allLocations[key])
+        })  }
+
       </MapView>
       
     );
@@ -82,14 +95,20 @@ class MapViewing extends Component {
 const mapStateToProps = (state) => {
   return {
     allNames: state.allNames,
-    currentLocation: state.currentLocation
+    currentLocation: state.currentLocation,
+    allLocations: state.allLocations, 
+    currentName: state.currentName
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleLocation: function(location) {
+      console.log('are you here', location)
       dispatch(currentLocation(location))
+    },
+    handleAllLocations: function() {
+      dispatch(retrieveFromStorage())
     }
   }
 }
