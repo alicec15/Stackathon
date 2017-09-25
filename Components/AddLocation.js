@@ -3,7 +3,7 @@ import { View, Button, Text, TextInput } from 'react-native';
 import store from '../store';
 import { connect } from 'react-redux';
 import { FormLabel, FormInput, FormValidationMessage, Buttons } from 'react-native-elements';
-import { currentNote } from '../reducers/index.js'
+import { currentNote, currentName, allNames } from '../reducers/index.js'
 
 
 
@@ -12,6 +12,7 @@ class AddLocation extends Component {
     super(props);
 
     this.state = {
+      name: '',
       changeNote: ''
     }
   }
@@ -24,12 +25,21 @@ class AddLocation extends Component {
   render() {
     const { currentLocation } = this.props;
     const { navigate } = this.props.navigation;
-    console.log(this.state)
     return (
       <View>
+
+        {/* adding name */}
+        <FormLabel>Title</FormLabel>
+        <FormInput 
+          onChangeText={(name) => this.setState({ name })}
+        />
+        <FormValidationMessage>Required Field</FormValidationMessage>      
+
+        {/* setting location to current coords */}
         <FormLabel>Location</FormLabel>
         <FormInput value={currentLocation.toString()}/>
 
+        {/* adding note */}
         <FormLabel>Add your note</FormLabel>
         <FormInput 
           multiline={true}
@@ -43,6 +53,7 @@ class AddLocation extends Component {
           title='ADD NEW LOCATION :)'
           onPress={() => {
             this.props.handleNote(this.state.changeNote)
+            this.props.handleName(this.state.name)
             navigate('Success')
           }}
         />
@@ -54,7 +65,9 @@ class AddLocation extends Component {
 const mapStateToProps = (state) => {
   return {
     currentLocation: state.currentLocation,
-    currentNote: state.currentNote
+    currentNote: state.currentNote,
+    currentName: state.currentName,
+    allNames: state.allNames
   }
 }
 
@@ -62,6 +75,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleNote: function(note) {
       dispatch(currentNote(note))
+    },
+    handleName: function(name) {
+      dispatch(currentName(name))
+      dispatch(allNames(name))
     }
   }
 }

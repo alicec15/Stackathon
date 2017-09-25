@@ -3,7 +3,6 @@ import { AsyncStorage, StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import Map from './Map';
 import store from '../store';
-import { currentLocation } from '../reducers/index.js'
 import { connect } from 'react-redux';
 
 class Home extends Component {
@@ -13,15 +12,6 @@ class Home extends Component {
 
   static navigationOptions = {
     title: 'Pin Your Location',
-  }
-
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(position => { 
-      const lat = position.coords.latitude; 
-      const long = position.coords.longitude; 
-      const location = [lat, long]
-      this.props.handleLocation(location)
-    })
   }
 
   render() {
@@ -54,12 +44,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    handleLocation: function(location) {
-      dispatch(currentLocation(location))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps)(Home)

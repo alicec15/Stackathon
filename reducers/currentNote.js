@@ -7,7 +7,6 @@ export const currentNote = note => {
 
 
 export default currentNoteReducer = (state='', action) => {
-    console.log(action.type); 
     switch (action.type) {
         case CURRENT_NOTE:
             return action.note
