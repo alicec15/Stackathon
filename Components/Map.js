@@ -13,7 +13,10 @@ class MapViewing extends Component {
     // this.renderMap = this.renderMap.bind(this)
     this.renderMapMarkers = this.renderMapMarkers.bind(this)
 
-    this.state = {}
+    this.state = {
+      latitude: 0,
+      longitude: 0
+    }
   }
 
   static navigationOptions = {
@@ -28,6 +31,7 @@ class MapViewing extends Component {
       const long = position.coords.longitude; 
       const location = [lat, long]
       this.props.handleLocation(location)
+      this.setState({ latitude: lat, longitude: long })
     })
   }
 
@@ -60,8 +64,8 @@ class MapViewing extends Component {
         style={{flex: 1, height: 200, width: 340, alignSelf: 'center'}}
         showsUserLocation={true}
         region={{
-          latitude: currentLocation[0],
-          longitude: currentLocation[1],
+          latitude: this.state.latitude,
+          longitude: this.state.longitude,
           latitudeDelta: 0.2622,
           longitudeDelta: 0.2601,
         }}

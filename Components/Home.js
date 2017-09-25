@@ -14,6 +14,15 @@ class Home extends Component {
     title: 'Pin Your Location',
   }
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(position => { 
+      const lat = position.coords.latitude; 
+      const long = position.coords.longitude; 
+      const location = [lat, long]
+      this.props.handleLocation(location)
+    })
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -43,5 +52,13 @@ const mapStateToProps = (state) => {
     currentLocation: state.currentLocation
   }
 }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    handleLocation: function(location) {
+      dispatch(currentLocation(location))
+    }
+  }
+}
 
-export default connect(mapStateToProps)(Home)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
