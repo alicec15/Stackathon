@@ -10,12 +10,18 @@ class MapViewing extends Component {
 
     this.pinnedLocations = {}
     this.getStoredLocations = this.getStoredLocations.bind(this)
+    // this.renderMap = this.renderMap.bind(this)
+    this.renderMapMarkers = this.renderMapMarkers.bind(this)
+
+    this.state = {}
   }
 
   static navigationOptions = {
       title: 'Pin Your Location',
   };
 
+  //initial rendering of the map yields an empty currentLocation, so region lat and long is undef, 
+  //how do i fix this without seeing the warning
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(position => { 
       const lat = position.coords.latitude; 
@@ -34,24 +40,36 @@ class MapViewing extends Component {
     })
   }
 
+  renderMapMarkers(location) {
+    return (
+      <MapView.Marker
+        key={ location.currentName }
+        coordinate={{ latitude: location.currentLocation[0], longitude: location.currentLocation[1] }}
+        title={ location.currentName }
+        description={ location.currentNote }
+      />
+    )
+  }
+
   render() {
     this.getStoredLocations();
     const { currentLocation } = this.props;
-    console.log(currentLocation, 'where ya at');
-    // console.log(this.pinnedLocations, 'did i get from async')
 
     return (
-      currentLocation && 
       <MapView
         style={{flex: 1, height: 200, width: 340, alignSelf: 'center'}}
         showsUserLocation={true}
         region={{
           latitude: currentLocation[0],
           longitude: currentLocation[1],
-          latitudeDelta: 0.0422,
-          longitudeDelta: 0.0401,
+          latitudeDelta: 0.2622,
+          longitudeDelta: 0.2601,
         }}
-      />
+      >
+          { Object.keys(this.pinnedLocations).map((key)=> {
+            return this.renderMapMarkers(this.pinnedLocations[key])
+          })  }
+      </MapView>
       
     );
   }
@@ -73,3 +91,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapViewing)
+
+const region={
+  latitude: currentLocation[0],
+  longitude: currentLocation[1],
+  latitudeDelta: 0.0422,
+  longitudeDelta: 0.0401,
+}

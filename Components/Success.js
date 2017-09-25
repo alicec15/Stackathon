@@ -15,7 +15,7 @@ class Success extends Component {
 
   render() { 
     const { currentLocation, currentNote, currentName } = this.props;
-    const noteObj = { currentLocation, currentNote };
+    const noteObj = { currentLocation, currentNote, currentName };
     this.sendToStorage(noteObj);
     const { navigate } = this.props.navigation;
     return (
